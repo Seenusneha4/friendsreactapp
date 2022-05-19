@@ -1,9 +1,16 @@
 import { getValue } from '@testing-library/user-event/dist/utils'
-import React from 'react'
+import axios from 'axios'
+import React, { useState } from 'react'
 import Header from './Header'
 
 const Viewfriend = () => {
-    var friendlist=[{"_id":"628613a5fb68dd10d6f53366","name":"RAHUL","friendName":"RAMESH","friendNickName":"RAMU","DescribeYourFriend":"Test description","__v":0},{"_id":"62863eb472b33daf7a22b7d5","name":"hhjs","friendName":"sjhq","friendNickName":"wdhd","__v":0}]
+    var [friendlist,setfriendlist]=useState([])
+    var [loadstatus,setloadstatus]=useState(true)
+    axios.get("https://dummyapifriends.herokuapp.com/view").then((response)=>{
+        console.log(response.data)
+        setfriendlist(response.data)
+        setloadstatus(false)
+    })
   return (
     <div>
      <Header/>
@@ -12,7 +19,9 @@ const Viewfriend = () => {
     <div className="row div col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
         <div className="row">
             <div className="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
-            <table class="table table-success">
+            {loadstatus ? <div class="spinner-border" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>:<table class="table table-success">
   <thead>
     <tr>
       <th scope="col">Name</th>
@@ -33,7 +42,7 @@ const Viewfriend = () => {
     
     })}
   </tbody>
-</table>
+</table> }
             </div>
             
         </div>
